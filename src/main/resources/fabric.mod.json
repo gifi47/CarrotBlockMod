@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "carrotblockmod",
+  "version": "0.1-SNAPSHOT",
+  "name": "CarrotBlockMod",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/gifi47/CarrotBlockMod"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/carrotblockmod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.gifi47.carrotblockmod.client.CarrotBlockModClient"
+    ],
+    "main": [
+      "com.gifi47.carrotblockmod.CarrotBlockMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.3",
+    "fabric": "*",
+    "minecraft": "1.20.4"
+  }
+}
