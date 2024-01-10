@@ -25,9 +25,9 @@ public class CarrotBlockMod implements ModInitializer {
     // This logger is used to write text to the console and the log file.
     // It is considered best practice to use your mod id as the logger's name.
     // That way, it's clear which mod wrote info, warnings, and errors.
-    public static final Logger LOGGER = LoggerFactory.getLogger("modid");
+    public static final Logger LOGGER = LoggerFactory.getLogger("carrotblockmod");
 
-    //public static final Block EXAMPLE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL).strength(4.0f));
+    public static final Block CARROT_BLOCK = new Block(FabricBlockSettings.create().strength(1.45f).burnable());
 
     public static final Item RENO_LOGAN_ITEM = new Item(new FabricItemSettings().food(FoodComponents.BAKED_POTATO));
     public static final Item PLATINUM_BAR_ITEM = new Item(new FabricItemSettings());
@@ -76,6 +76,7 @@ public class CarrotBlockMod implements ModInitializer {
                 entries.add(CARROT_SWORD);
                 entries.add(CARROT_SHOVEL);
                 entries.add(CARROT_HOE);
+                entries.add(CARROT_BLOCK);
             })
             .build();
 
@@ -99,6 +100,10 @@ public class CarrotBlockMod implements ModInitializer {
         // Proceed with mild caution.
 
         LOGGER.info("Hello Fabric world!");
+
+        Registry.register(Registries.BLOCK, new Identifier("carrotblockmod", "carrot_block"), CARROT_BLOCK);
+        Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "carrot_block"),
+                new BlockItem(CARROT_BLOCK, new FabricItemSettings().food(new FoodComponent.Builder().hunger(7).saturationModifier(0.6f).build())));
 
         Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "reno_logan_item"), RENO_LOGAN_ITEM);
         Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "platinum_bar_item"), PLATINUM_BAR_ITEM);
