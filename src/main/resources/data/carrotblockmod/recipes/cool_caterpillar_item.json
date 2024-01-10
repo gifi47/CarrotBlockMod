@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "Q": {
+      "item": "minecraft:slime_ball"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "pattern": [
+    "QQQ",
+    "RPP",
+    "QQQ"
+  ],
+  "result": {
+    "item": "carrotblockmod:cool_caterpillar_item"
+  }
+}
