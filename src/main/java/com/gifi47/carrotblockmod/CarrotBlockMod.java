@@ -1,21 +1,32 @@
 package com.gifi47.carrotblockmod;
 
+import com.gifi47.carrotblockmod.blocks.ChargeableBlock;
 import com.gifi47.carrotblockmod.enchantments.EffectiveEatingEnchantment;
+import com.gifi47.carrotblockmod.entities.CarrotEntity;
 import com.gifi47.carrotblockmod.items.CoolCaterpillarItem;
 import com.gifi47.carrotblockmod.misc.CarrotToolMaterial;
 import com.gifi47.carrotblockmod.misc.PlatinumArmorMaterial;
 import com.gifi47.carrotblockmod.misc.PlatinumToolMaterial;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.EquipmentSlotProvider;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -27,7 +38,28 @@ public class CarrotBlockMod implements ModInitializer {
     // That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("carrotblockmod");
 
-    public static final Block CARROT_BLOCK = new Block(FabricBlockSettings.create().strength(1.45f).burnable());
+    public static final Block CARROT_BLOCK = new Block(FabricBlockSettings.create().strength(1.45f).burnable().sounds(
+            new BlockSoundGroup(1f, 1f,
+                    SoundEvents.BLOCK_CROP_BREAK,
+                    SoundEvents.BLOCK_SPONGE_STEP,
+                    SoundEvents.ITEM_CROP_PLANT,
+                    SoundEvents.BLOCK_WART_BLOCK_HIT,
+                    SoundEvents.BLOCK_WART_BLOCK_FALL)));
+    public static final Block PLATINUM_BLOCK = new Block(FabricBlockSettings.create().strength(4f).sounds(
+            new BlockSoundGroup(1f, 1f,
+                    SoundEvents.BLOCK_METAL_BREAK,
+                    SoundEvents.BLOCK_METAL_STEP,
+                    SoundEvents.BLOCK_METAL_PLACE,
+                    SoundEvents.BLOCK_METAL_HIT,
+                    SoundEvents.BLOCK_METAL_FALL)));
+
+    public static final Block PLATINUM_ELECTRO_BLOCK = new ChargeableBlock(FabricBlockSettings.create().strength(4f).sounds(
+            new BlockSoundGroup(1f, 1f,
+                    SoundEvents.BLOCK_METAL_BREAK,
+                    SoundEvents.BLOCK_METAL_STEP,
+                    SoundEvents.BLOCK_METAL_PLACE,
+                    SoundEvents.BLOCK_METAL_HIT,
+                    SoundEvents.BLOCK_METAL_FALL)));
 
     public static final Item RENO_LOGAN_ITEM = new Item(new FabricItemSettings().food(FoodComponents.BAKED_POTATO));
     public static final Item PLATINUM_BAR_ITEM = new Item(new FabricItemSettings());
@@ -77,6 +109,8 @@ public class CarrotBlockMod implements ModInitializer {
                 entries.add(CARROT_SHOVEL);
                 entries.add(CARROT_HOE);
                 entries.add(CARROT_BLOCK);
+                entries.add(PLATINUM_BLOCK);
+                entries.add(PLATINUM_ELECTRO_BLOCK);
             })
             .build();
 
@@ -93,6 +127,13 @@ public class CarrotBlockMod implements ModInitializer {
             })
             .build();
 
+    public static final EntityType<CarrotEntity> CARROT_ENTITY = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier("carrotblockmod", "carrot_entity"),
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, CarrotEntity::new).dimensions(
+                    EntityDimensions.fixed(0.75f, 0.75f)).build()
+    );
+
     @Override
     public void onInitialize() {
         // This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -104,6 +145,13 @@ public class CarrotBlockMod implements ModInitializer {
         Registry.register(Registries.BLOCK, new Identifier("carrotblockmod", "carrot_block"), CARROT_BLOCK);
         Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "carrot_block"),
                 new BlockItem(CARROT_BLOCK, new FabricItemSettings().food(new FoodComponent.Builder().hunger(7).saturationModifier(0.6f).build())));
+        Registry.register(Registries.BLOCK, new Identifier("carrotblockmod", "platinum_block"), PLATINUM_BLOCK);
+        Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "platinum_block"),
+                new BlockItem(PLATINUM_BLOCK, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("carrotblockmod", "platinum_electro_block"), PLATINUM_ELECTRO_BLOCK);
+        Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "platinum_electro_block"),
+                new BlockItem(PLATINUM_ELECTRO_BLOCK, new FabricItemSettings()));
+
 
         Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "reno_logan_item"), RENO_LOGAN_ITEM);
         Registry.register(Registries.ITEM, new Identifier("carrotblockmod", "platinum_bar_item"), PLATINUM_BAR_ITEM);
@@ -132,5 +180,7 @@ public class CarrotBlockMod implements ModInitializer {
 
         Registry.register(Registries.ITEM_GROUP, new Identifier("carrotblockmod", "sus_group"), SUS_ITEM_GROUP);
         Registry.register(Registries.ITEM_GROUP, new Identifier("carrotblockmod", "bars_group"), BARS_ITEM_GROUP);
+
+        FabricDefaultAttributeRegistry.register(CARROT_ENTITY, CarrotEntity.createMobAttributes());
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "carrotblockmod:block/platinum_electro_block_charged"
+  }
+}

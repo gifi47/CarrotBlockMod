@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "charged=false": { "model": "carrotblockmod:block/platinum_electro_block" },
+    "charged=true": { "model": "carrotblockmod:block/platinum_electro_block_charged" }
+  }
+}
